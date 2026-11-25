@@ -2,11 +2,11 @@
 
 A Java console program that checks whether a South African ID number is valid and decodes the information stored in it.
 
-I built this as a first-year Computer Science (Diploma) student at Tshwane University of Technology to practise Java: strings, loops, methods, input handling and an algorithm.
+I built this as a first-year Computer Science (Diploma) student at Tshwane University of Technology to practise Java: strings, loops, classes, input handling and an algorithm.
 
 ## What it does
 
-The program asks for a 13-digit ID number and runs these checks:
+The program keeps asking for ID numbers until you type `exit`. For each number it runs these checks:
 
 1. The number has exactly 13 characters.
 2. Every character is a digit.
@@ -14,7 +14,7 @@ The program asks for a 13-digit ID number and runs these checks:
 4. The citizenship digit (digit 11) is 0 or 1.
 5. The last digit passes the **Luhn check digit** algorithm.
 
-If the number is valid, it prints the date of birth, gender and citizenship status.
+If the number is valid, it prints the date of birth, gender and citizenship status. If not, it says which check failed.
 
 ## How an SA ID number is structured
 
@@ -25,6 +25,14 @@ If the number is valid, it prints the date of birth, gender and citizenship stat
 | 11 | Citizenship: 0 = SA citizen, 1 = permanent resident |
 | 12 | Not used by this program |
 | 13 | Check digit (Luhn algorithm) |
+
+## Project structure
+
+| File | Purpose |
+|---|---|
+| `IdValidator.java` | The class that validates an ID number and holds the decoded details |
+| `IdChecker.java` | The console program (reads input, prints results) |
+| `IdValidatorTests.java` | A simple test runner with valid and invalid test cases |
 
 ## How to run it
 
@@ -37,34 +45,52 @@ java IdChecker
 
 ## Example
 
-Input (a made-up test number, not a real person's ID):
+These are made-up test numbers, not real people's IDs.
 
 ```
-Enter a 13-digit ID number: 9001015000085
+SA ID Number Validator
+Type an ID number to check it, or type exit to quit.
 
-This ID number is valid.
-Date of birth: 1990-01-01
-Gender: Male
-Citizenship: SA citizen
+ID number: 9001015000085
+Valid ID number.
+  Date of birth: 1990-01-01
+  Gender:        Male
+  Citizenship:   SA citizen
+
+ID number: 9001015000086
+Invalid: The check digit is wrong.
+
+ID number: exit
+Goodbye!
 ```
 
-## Test cases
+## Running the tests
 
-| Input | Result |
+```
+javac IdValidator.java IdValidatorTests.java
+java IdValidatorTests
+```
+
+Test cases include:
+
+| Input | Expected result |
 |---|---|
-| `9001015000085` | Valid |
+| `9001015000085` | Valid (male, SA citizen) |
+| `9001014000086` | Valid (female, SA citizen) |
 | `9001015000086` | Invalid: the check digit is wrong |
 | `0502290000087` | Invalid: 29 February 2005 is not a real date |
 | `12345` | Invalid: must have 13 digits |
 | `12345678901ab` | Invalid: can only contain digits |
+| *(empty)* | Invalid: must have 13 digits |
 
 ## What I learned
 
-- Reading user input with `Scanner`
+- Reading user input with `Scanner` and looping until the user quits
 - Working with `String` methods such as `substring()` and `charAt()`
 - Validating dates with `java.time.LocalDate`
-- Breaking a program into methods
+- Designing a class with a constructor, private methods and getters
 - Implementing the Luhn algorithm
+- Writing test cases for valid and invalid input
 
 ## Limitations
 
@@ -72,9 +98,9 @@ This program only checks that a number is **structurally valid**. It cannot tell
 
 ## Ideas for improvement
 
-- Keep asking for numbers until the user types `exit`
-- Move the logic into an `IdValidator` class
-- Add automated tests with JUnit
+- Move the tests to JUnit
+- Read many ID numbers from a file and report which are valid
+- Build a simple graphical or web version
 
 ## Author
 
